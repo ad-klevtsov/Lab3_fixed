@@ -92,6 +92,6 @@ int main()
 	g.addEdge(Syzran, Moscow, SyMo);
 	g.print();
 	//g.deep_search();
-
+	g.dijkstra(Samara, Togliatti);
 	return 0;
 }

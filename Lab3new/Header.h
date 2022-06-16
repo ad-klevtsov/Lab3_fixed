@@ -193,5 +193,96 @@ public:
 		}
 	};
 
+	void dijkstra(const TVertex& source, const TVertex& dest)
+	{
+		int is = ret_index(source);
+		int ds = ret_index(dest);
+		if (is >= 0 && ds >= 0)
+		{
+			vector<vector<TEdge>> w(table.size());
+			for (unsigned i = 0; i < table.size(); i++)
+			{
+				for (unsigned j = 0; j < table.size(); j++)
+				{
+					TEdge tmp(false, false, 999999);
+					w[i].push_back(tmp);
+				}
+			}
+			for (unsigned i = 0; i < table.size(); i++)
+			{
+				for (unsigned j = 0; j < table.at(i).dest.size(); j++)
+				{
+					unsigned dest_index = ret_index(table.at(i).dest.at(j).des);
+					w[i][dest_index] = static_cast<double>(table.at(i).dest.at(j).edge);
+				}
+			}
+			vector<vector<TVertex>> ways;
+			ways.resize(table.size());
+			vector<DVertex> S;
+			vector<DVertex> Q(table.size());
+			for (unsigned i = 0; i < table.size(); i++)
+			{
+				Q[i].cur = table.at(i).source;
+				Q[i].d = 999999;
+			}
+			Q[is].d = 0;
+			sort(Q.begin(), Q.end(), greater<double>());
+			while (!Q.empty())
+			{
+				DVertex u = Q.back();
+				Q.pop_back();
+				S.push_back(u);
+				for (unsigned i = 0; i < table[(ret_index(u.cur))].dest.size(); i++)
+				{
+					DVertex v;
+					bool flag = false;
+					for (unsigned j = 0; j < Q.size(); j++)
+					{
+						if (Q[j].cur == table[ret_index(u.cur)].dest[i].des)
+						{
+							v = Q[j];
+							flag = true;
+							break;
+						}
+					}
+					if (flag && (v.d > u.d + w[ret_index(u.cur)][ret_index(v.cur)]))
+					{
+						ways[ret_index(v.cur)] = ways[ret_index(u.cur)];
+						ways[ret_index(v.cur)].push_back((table.at(ret_index(u.cur)).source));
+						v.d = u.d + w[ret_index(u.cur)][ret_index(v.cur)];
+						v.prev = u.cur;
+						for (unsigned i = 0; i < Q.size(); i++)
+						{
+							if (Q[i].cur == v.cur)
+							{
+								Q[i] = v;
+								sort(Q.begin(), Q.end(), greater<double>());
+								break;
+							}
+						}
+					}
+				}
+			}
+			for (unsigned i = 0; i < ways.size(); i++)
+			{
+				ways[i].push_back(table.at(i).source);
+			}
+			cout << "Result:" << endl << "Way:";
+			for (unsigned j = 0; j < ways[ds].size(); j++)
+				cout << ways[ds][j] << "->";
+			cout << "\b\b";
+			for (unsigned i = 0; i < S.size(); i++)
+			{
+				if (S[i].cur == table[ds].source)
+				{
+					if (S[i] != 999999)
+						cout << " = " << S[i].d << endl;
+					else
+						cout << "" << " = " << "error" << endl;
+				}
+			}
+			cout << endl;
+		}
+	}
 
 };
