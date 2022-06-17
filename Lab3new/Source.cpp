@@ -89,9 +89,9 @@ int main()
 	g.addEdge(Zhigulevsk, Syzran, ZhSy);
 	g.addEdge(Samara, Moscow, SaMo);
 	g.addEdge(Togliatti, Moscow, ToMo);
-	g.addEdge(Syzran, Moscow, SyMo);
-	g.print();
-	//g.deep_search();
+	//g.addEdge(Syzran, Moscow, SyMo);
+	//g.print();
+	g.deep_search();
 	g.dijkstra(Samara, Togliatti);
 	return 0;
 }
