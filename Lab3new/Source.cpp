@@ -1,6 +1,6 @@
 #include "Header.h"
 
-struct City {
+class City {
 private:
 	int count_of_citizens;
 	string name;
@@ -27,7 +27,7 @@ public:
 	}
 };
 
-struct Road {
+class Road {
 private:
 	bool federal;
 	bool toll;
@@ -90,7 +90,7 @@ int main()
 	g.addEdge(Samara, Moscow, SaMo);
 	g.addEdge(Togliatti, Moscow, ToMo);
 	//g.addEdge(Syzran, Moscow, SyMo);
-	//g.print();
+	g.print();
 	g.deep_search();
 	g.dijkstra(Samara, Togliatti);
 	return 0;
